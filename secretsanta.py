@@ -112,8 +112,6 @@ if sendmail.lower() == "y":
 	
 	debug = raw_input("Debug mode (doesn't actually send) (Y/N)?: ")
 	
-	subject = "Your Secret Santa Assignment..."
-	
 	if debug.lower() == "n":
 		print "\nPrepping to send email..."
 		smtp = raw_input("SMTP Server: ")
@@ -133,6 +131,11 @@ if sendmail.lower() == "y":
 	for to, match in pairs:
 		to_name, to_address = to
 		match_name, match_address = match
+	
+		subject = "{0}{1} Secret Santa Assignment...".format(
+			to_name,
+			"'" if to_name.endswith("s") else "'s"
+		)
 	
 		headers = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (from_address, to_address, subject)
 		message = headers + "Hey %s,\n\nYour Secret Santa is: %s!\n\nShhh...don't tell anyone! ;)\n\n-Santa's little helper\n\nP.S. This was sent by one of Santa's elves (an automated program). So please don't reply to this email...cuz then that elf will know who your secret santa is too...which would make that elf very, very sad and they would cry little elf-tears. So yeah...ix-nay on the eply-ray.\n\nOh, and if you should happen to lose this email or forget who your secret santa is you can email me (real Dane, not elf-Dane) and I can send you a file with your match without me having to know who you have. And yes, this is overly complicated. YAY CHRISTMAS!" % (to_name, match_name)
