@@ -111,13 +111,13 @@ sendmail = raw_input("\nSend emails (Y/N)?: ")
 if sendmail.lower() == "y":
 	
 	debug = raw_input("Debug mode (doesn't actually send) (Y/N)?: ")
+	from_address = raw_input("From Address: ")
 	
 	if debug.lower() == "n":
 		print "\nPrepping to send email..."
 		smtp = raw_input("SMTP Server: ")
 		username = raw_input("Username: ")
 		password = getpass()
-		from_address = raw_input("From Address: ")
 	
 		s = smtplib.SMTP(smtp)
 		#s.set_debuglevel(1)
@@ -125,8 +125,6 @@ if sendmail.lower() == "y":
 		s.starttls()
 		s.ehlo()
 		s.login(username, password)
-	else:
-		from_address = "dbertram@gmail.com"
 	
 	for to, match in pairs:
 		to_name, to_address = to
