@@ -135,7 +135,7 @@ if sendmail.lower() == "y":
 		match_name, match_address = match
 	
 		headers = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (from_address, to_address, subject)
-		message = headers + "Hey %s,\n\nYour Secret Santa is %s! Shhh...don't tell anyone! ;)\n\n-Santa's little helper\n\nP.S. This was sent by one of Santa's elves (an automated program). So please don't reply to this email...cuz then that elf will know who your secret santa is too...which would make that elf very, very sad and they would cry little elf-tears. So yeah...ix-nay on the eply-ray.\n\nOh, and if you should happen to lose this email or forget who your secret santa is you can email me (real Mark, not elf-Mark) and I can send you a file with your match without me having to know who you have. And yes, this is overly complicated. YAY CHRISTMAS!\n\nP.P.S. This script was borrowed from a friend who wrote the text. I thought the text was funny so I left it in for you to enjoy ;)" % (to_name, match_name)
+		message = headers + "Hey %s,\n\nYour Secret Santa is: %s!\n\nShhh...don't tell anyone! ;)\n\n-Santa's little helper\n\nP.S. This was sent by one of Santa's elves (an automated program). So please don't reply to this email...cuz then that elf will know who your secret santa is too...which would make that elf very, very sad and they would cry little elf-tears. So yeah...ix-nay on the eply-ray.\n\nOh, and if you should happen to lose this email or forget who your secret santa is you can email me (real Dane, not elf-Dane) and I can send you a file with your match without me having to know who you have. And yes, this is overly complicated. YAY CHRISTMAS!" % (to_name, match_name)
 	
 		if debug.lower() == "y":
 			print "\n" + message
@@ -145,7 +145,3 @@ if sendmail.lower() == "y":
 
 	if debug.lower() == "n":
 		s.close()
-	
-	
-	
-
