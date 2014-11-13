@@ -104,7 +104,7 @@ if raw_input("\nDisplay matches (Y/N)? ").lower() == "y":
 if raw_input("\nWrite matches to disk (will overwrite existing files) (Y/N)? ").lower() == "y":
 	for p1, p2 in pairs:
 		out = file(join(output_dir, p1[0] + ".txt"), "w")
-		out.write(p2[0])
+		out.write("{0} is buying for {1}".format(p1[0], p2[0]))
 		out.close()
 
 sendmail = raw_input("\nSend emails (Y/N)?: ")
