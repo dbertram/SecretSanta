@@ -113,20 +113,18 @@ if sendmail.lower() == "y":
 	debug = raw_input("Debug mode (doesn't actually send) (Y/N)?: ")
 	organizer_name = raw_input("Your name (the organizer): ")
 	from_address = raw_input("From Address: ")
-	
-	if debug.lower() == "n":
-		print "\nPrepping to send email..."
-		smtp = raw_input("SMTP Server: ")
-		username = raw_input("Username: ")
-		password = getpass()
-	
-		s = smtplib.SMTP(smtp)
-		#s.set_debuglevel(1)
-		s.ehlo()
-		s.starttls()
-		s.ehlo()
-		s.login(username, password)
-	
+
+	smtp_server = raw_input("SMTP Server: ")
+	username = raw_input("SMTP Username: ")
+	password = getpass()
+
+	s = smtplib.SMTP(smtp_server)
+	#s.set_debuglevel(1)
+	s.ehlo()
+	s.starttls()
+	s.ehlo()
+	s.login(username, password)
+
 	for to, match in pairs:
 		to_name, to_address = to
 		match_name, match_address = match
@@ -145,5 +143,4 @@ if sendmail.lower() == "y":
 		if debug.lower() == "n":
 			s.sendmail(from_address, to_address, message)
 
-	if debug.lower() == "n":
-		s.close()
+	s.close()
