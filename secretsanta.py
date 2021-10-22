@@ -57,6 +57,10 @@ print("\nInput list:")
 for entry in names:
 	print("\t{0} ({1})".format(entry[0], entry[1]))
 
+print("\nDisallowed pairings:")
+for p1 in not_allowed:
+	print("\t{0} => {1} NOT ALLOWED".format(p1, not_allowed[p1]))
+
 loop_guard = 0
 valid_order = False
 
