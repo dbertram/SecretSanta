@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+from builtins import input
+from builtins import map
 import smtplib
 import string
 from getpass import getpass
@@ -49,7 +51,7 @@ if usage_error:
 # if we got here, everything is niffy-spiffy so far
 print("input_file = \"{0}\"\noutput_dir = \"{1}\"".format(input_file, output_dir))
 
-lines =  map(string.strip, file(input_file, "r").readlines())
+lines =  list(map(string.strip, file(input_file, "r").readlines()))
 names = []
 for entry in lines:
 	names.append(string.split(entry, "\t"))
@@ -97,24 +99,24 @@ if not valid_order:
 		print("\t{0} => {1} NOT ALLOWED".format(p1, not_allowed[p1]))
 	exit()
 
-if raw_input("\nDisplay matches (Y/N)? ").lower() == "y":
+if input("\nDisplay matches (Y/N)? ").lower() == "y":
 	for p1, p2 in pairs:
 		print("\t{0} => {1} ".format(p1[0], p2[0]))
 
-if raw_input("\nWrite matches to disk (will overwrite existing files) (Y/N)? ").lower() == "y":
+if input("\nWrite matches to disk (will overwrite existing files) (Y/N)? ").lower() == "y":
 	for p1, p2 in pairs:
 		out = file(join(output_dir, p1[0] + ".txt"), "w")
 		out.write("{0} is buying for {1}".format(p1[0], p2[0]))
 		out.close()
 
-sendmail = raw_input("\nSend emails (Y/N)?: ")
+sendmail = input("\nSend emails (Y/N)?: ")
 if sendmail.lower() == "y":
-	debug = raw_input("Debug mode (doesn't actually send) (Y/N)?: ")
-	organizer_name = raw_input("Your name (the organizer): ")
-	from_address = raw_input("From Address: ")
+	debug = input("Debug mode (doesn't actually send) (Y/N)?: ")
+	organizer_name = input("Your name (the organizer): ")
+	from_address = input("From Address: ")
 
-	smtp_server = raw_input("SMTP Server: ")
-	username = raw_input("SMTP Username: ")
+	smtp_server = input("SMTP Server: ")
+	username = input("SMTP Username: ")
 	password = getpass()
 
 	s = smtplib.SMTP(smtp_server)
