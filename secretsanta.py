@@ -111,7 +111,7 @@ if input("\nWrite matches to disk (will overwrite existing files) (Y/N)? ").lowe
 		out.write("{0} is buying for {1}".format(p1[0], p2[0]))
 		out.close()
 
-sendmail = input("\nSend emails (Y/N)?: ")
+sendmail = input("\nPrepare emails (Y/N)?: ")
 if sendmail.lower() == "y":
 	debug = input("Debug mode (doesn't actually send) (Y/N)?: ")
 	organizer_name = input("Your name (the organizer): ")
@@ -140,10 +140,13 @@ if sendmail.lower() == "y":
 		headers = "From: {0}\r\nTo: {1}\r\nSubject: {2}\r\n\r\n".format(from_address, to_address, subject)
 		message = headers + "Hey {0},\n\nYour Secret Santa is: {1}!\n\nShhh...don't tell anyone! ;)\n\n-Santa's little helper\n\nP.S. Please don't reply to this email, otherwise you'll spill the beans and {2} will know who you're buying for (they sent you this email via a dorky, overly-complicated, automated secret santa script).\n\nOh, and if you should happen to lose this email or forget who your secret santa is you can email {2} and they can send you a file with your match without them actually having to know who you're buying for. YAY CHRISTMAS!".format(to_name, match_name, organizer_name)
 	
+		print("\nSending " + subject)
+
 		if debug.lower() == "y":
 			print("\n" + message)
 	
 		if debug.lower() == "n":
 			s.sendmail(from_address, to_address, message)
+			print("Successfully sent!")
 
 	s.quit()
