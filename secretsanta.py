@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 
-from builtins import input
-from builtins import map
-import smtplib
-import string
+from builtins import input, map
 from getpass import getpass
-from sys import argv
-from random import randint, shuffle
 from os.path import *
+from random import shuffle
+from smtplib import SMTP
+from sys import argv
 
 dir, script = split(argv[0])
 usage_error = False
@@ -51,10 +49,10 @@ if usage_error:
 # if we got here, everything is niffy-spiffy so far
 print("input_file = \"{0}\"\noutput_dir = \"{1}\"".format(input_file, output_dir))
 
-lines =  list(map(string.strip, file(input_file, "r").readlines()))
+lines =  list(map(str.strip, open(input_file, "r").readlines()))
 names = []
 for entry in lines:
-	names.append(string.split(entry, "\t"))
+	names.append(str.split(entry, "\t"))
 print("\nInput list:")
 for entry in names:
 	print("\t{0} ({1})".format(entry[0], entry[1]))
@@ -105,7 +103,7 @@ if input("\nDisplay matches (Y/N)? ").lower() == "y":
 
 if input("\nWrite matches to disk (will overwrite existing files) (Y/N)? ").lower() == "y":
 	for p1, p2 in pairs:
-		out = file(join(output_dir, p1[0] + ".txt"), "w")
+		out = open(join(output_dir, p1[0] + ".txt"), "w")
 		out.write("{0} is buying for {1}".format(p1[0], p2[0]))
 		out.close()
 
@@ -119,7 +117,7 @@ if sendmail.lower() == "y":
 	username = input("SMTP Username: ")
 	password = getpass()
 
-	s = smtplib.SMTP(smtp_server)
+	s = SMTP(smtp_server)
 	#s.set_debuglevel(1)
 	s.ehlo()
 	s.starttls()
@@ -144,4 +142,4 @@ if sendmail.lower() == "y":
 		if debug.lower() == "n":
 			s.sendmail(from_address, to_address, message)
 
-	s.close()
+	s.quit()
