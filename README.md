@@ -5,6 +5,9 @@
 1. `asdf install`
 1. Create your input list
    - format is `[first name]\t[email]`, one person per line
+1. Create your output directory
+   - the script will write one text file per person in the input list to this directory
+   - the name of each text file will be the person's name and the content of the file will indicate the name of the person they are buying for
 1. Optionally update the `not_allowed` dictionary near the top of `secretsanta.py` to prevent certain pairings (e.g., spouses)
    - disallowed pairings are `[first name]` to `[first name]`, e.g., `{ "Alex":"Sam", "Sam":"Alex" }`
 1. `python secretsanta.py input_list.txt output_dir`
