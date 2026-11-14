@@ -1,0 +1,22 @@
+{
+  "name": "secret-santa",
+  "private": true,
+  "version": "1.0.0",
+  "description": "A single-page Secret Santa organizer with Gmail OAuth delivery",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "deploy": "wrangler deploy",
+    "test": "node --test --test-isolation=none tests/*.test.mjs",
+    "check:deploy": "wrangler deploy --dry-run --outdir /tmp/secret-santa-worker",
+    "test:browser": "playwright test",
+    "format": "prettier --write public/index.html tests playwright.config.mjs package.json wrangler.jsonc README.md"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "prettier": "^3.10.1",
+    "wrangler": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
