@@ -1,0 +1,1965 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A little Christmas magic. Plan a private Secret Santa exchange and send assignments with your Gmail account."
+    />
+    <title>Secret Santa · A little Christmas magic</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --paper: #fbf8f1;
+        --ink: #233d35;
+        --muted: #64736b;
+        --green: #244d3e;
+        --line: #dedfd3;
+        --red: #a63e33;
+        --gold: #bb9250;
+        --white: #fffefb;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        font-size: 15px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--paper);
+        color: var(--ink);
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        padding: 0.65rem 0.95rem;
+        background: var(--white);
+        color: var(--ink);
+        font-weight: 600;
+      }
+      button:hover {
+        background: #eeeee4;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      button.primary {
+        background: var(--green);
+        color: white;
+        border-color: var(--green);
+      }
+      button.primary:hover {
+        background: #173b2e;
+      }
+      button.danger {
+        color: var(--red);
+      }
+      button.small {
+        padding: 0.4rem 0.65rem;
+        font-size: 0.85rem;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.65rem 0.75rem;
+        border: 1px solid #c9cfc4;
+        border-radius: 6px;
+        background: var(--white);
+        color: var(--ink);
+      }
+      textarea {
+        resize: vertical;
+        line-height: 1.6;
+      }
+      input:focus-visible,
+      textarea:focus-visible,
+      select:focus-visible,
+      button:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid #c39b57;
+        outline-offset: 3px;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+      fieldset {
+        border: 0;
+        padding: 0;
+        margin: 0;
+        min-width: 0;
+      }
+      header {
+        max-width: 1240px;
+        margin: auto;
+        padding: 30px 36px 22px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: -0.4px;
+        font-size: 1.1rem;
+      }
+      .mark {
+        display: grid;
+        place-items: center;
+        background: var(--green);
+        color: #f4e6c9;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        font-size: 24px;
+      }
+      .eyebrow {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--muted);
+        font-size: 0.7rem;
+        font-weight: 700;
+      }
+      main {
+        max-width: 1240px;
+        padding: 35px 36px 60px;
+        margin: auto;
+      }
+      .intro {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 25px;
+        margin-bottom: 28px;
+      }
+      h1 {
+        font-family: Georgia, serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 400;
+        letter-spacing: -1px;
+        margin: 8px 0 10px;
+      }
+      h2 {
+        font-family: Georgia, serif;
+        font-weight: 400;
+        font-size: 1.5rem;
+        margin: 0;
+      }
+      h3 {
+        font-size: 1rem;
+        margin: 0 0 14px;
+      }
+      p {
+        line-height: 1.6;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .intro p {
+        margin: 0;
+      }
+      .badge {
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        padding: 7px 12px;
+        white-space: nowrap;
+        font-size: 0.8rem;
+        color: var(--green);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+      .stack {
+        display: grid;
+        gap: 24px;
+      }
+      .card {
+        background: var(--white);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 3px 10px #203c3004;
+      }
+      .card-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 18px;
+      }
+      .step {
+        font-family: system-ui, sans-serif;
+        font-size: 0.72rem;
+        background: #eef1e8;
+        border-radius: 50%;
+        display: inline-grid;
+        place-items: center;
+        width: 25px;
+        height: 25px;
+        vertical-align: middle;
+        margin-right: 9px;
+        color: var(--green);
+        font-weight: 600;
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+        align-items: end;
+      }
+      .row > * {
+        min-width: 0;
+      }
+      .grow {
+        flex: 1;
+      }
+      .field {
+        margin-bottom: 16px;
+      }
+      .hint {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.5;
+        margin: 8px 0 0;
+      }
+      .actions {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .family-tools {
+        margin-top: 12px;
+      }
+      .person {
+        display: grid;
+        grid-template-columns: minmax(90px, 0.85fr) minmax(130px, 1.4fr) auto;
+        gap: 8px;
+        align-items: start;
+        margin: 10px 0;
+      }
+      .person button {
+        padding: 0.65rem;
+      }
+      .person-head {
+        display: grid;
+        grid-template-columns: 0.85fr 1.4fr 37px;
+        gap: 8px;
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 22px;
+      }
+      .empty {
+        padding: 20px 10px;
+        text-align: center;
+        border: 1px dashed var(--line);
+        border-radius: 7px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .rules {
+        list-style: none;
+        margin: 16px 0 0;
+        padding: 0;
+      }
+      .rules li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid var(--line);
+        padding: 10px 0;
+        gap: 12px;
+        font-size: 0.9rem;
+      }
+      .check {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin: 12px 0;
+        font-weight: 400;
+        font-size: 0.85rem;
+      }
+      .check input {
+        width: auto;
+        accent-color: var(--green);
+      }
+      .rule-selects {
+        display: grid;
+        grid-template-columns: 1fr 24px 1fr;
+        gap: 6px;
+        align-items: center;
+      }
+      .arrow {
+        text-align: center;
+        color: var(--muted);
+      }
+      .note {
+        padding: 12px 14px;
+        background: #f1f3eb;
+        border-radius: 7px;
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+      .notice {
+        padding: 13px 17px;
+        border: 1px solid #d4bd87;
+        background: #fff3d8;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        white-space: pre-line;
+        line-height: 1.5;
+      }
+      .notice.error {
+        background: #fff0eb;
+        border-color: #dab5a9;
+        color: #8b3025;
+      }
+      .notice.success {
+        background: #edf4ec;
+        border-color: #b9ccb5;
+        color: var(--green);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      details summary {
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+      details[open] summary {
+        margin-bottom: 16px;
+      }
+      .connection {
+        font-size: 0.8rem;
+        color: var(--muted);
+        max-width: 320px;
+        text-align: right;
+      }
+      .preview {
+        padding: 22px;
+        background: #f8f7f2;
+        border: 1px solid #e4e3d9;
+        border-radius: 8px;
+        margin-top: 18px;
+        overflow-wrap: anywhere;
+      }
+      .preview-meta {
+        font-size: 0.8rem;
+        color: var(--muted);
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 15px;
+        line-height: 1.9;
+      }
+      .preview-subject {
+        font-size: 1.1rem;
+        margin: 18px 0 14px;
+        font-weight: 650;
+      }
+      .preview-body {
+        white-space: pre-wrap;
+        line-height: 1.75;
+        font-family: inherit;
+        font-size: 0.9rem;
+        margin: 0;
+      }
+      .preview-tag {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .mail-card {
+        border-top: 3px solid var(--green);
+      }
+      .mail-card p {
+        font-size: 0.9rem;
+      }
+      .divider {
+        height: 1px;
+        background: var(--line);
+        margin: 20px 0;
+      }
+      #dry-results {
+        max-height: 390px;
+        overflow: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.85rem;
+      }
+      th,
+      td {
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        padding: 10px 7px;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 500;
+      }
+      .delivery-list {
+        list-style: none;
+        padding: 0;
+        margin: 12px 0;
+        max-height: 300px;
+        overflow: auto;
+      }
+      .delivery-list li {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 0.85rem;
+        border-bottom: 1px solid var(--line);
+        padding: 10px 0;
+      }
+      .delivery-list span:last-child {
+        color: var(--muted);
+      }
+      footer {
+        font-size: 0.75rem;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        margin-top: 28px;
+        line-height: 1.6;
+      }
+      dialog {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 28px;
+        background: var(--paper);
+        color: var(--ink);
+        width: min(500px, calc(100% - 32px));
+      }
+      dialog::backdrop {
+        background: #18332880;
+      }
+      dialog h2 {
+        margin-bottom: 16px;
+      }
+      dialog .actions {
+        justify-content: end;
+        margin-top: 20px;
+      }
+      a {
+        color: var(--green);
+      }
+      .save-state {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 12px;
+      }
+      .status-dot {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        background: var(--gold);
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+      .locked {
+        margin-top: 14px;
+      }
+      #own-match {
+        font-family: Georgia, serif;
+        font-size: 1.5rem;
+        padding: 20px;
+        background: #eef2e8;
+        border-radius: 8px;
+        line-height: 1.5;
+      }
+      .full {
+        width: 100%;
+      }
+      @media (max-width: 850px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .intro {
+          align-items: start;
+        }
+        .badge {
+          display: none;
+        }
+        header,
+        main {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .card {
+          padding: 20px;
+        }
+        .connection {
+          max-width: 180px;
+        }
+        .intro p {
+          max-width: 480px;
+        }
+      }
+      @media (max-width: 430px) {
+        header {
+          padding-top: 20px;
+        }
+        .connection {
+          font-size: 0.7rem;
+          max-width: 135px;
+        }
+        .person {
+          grid-template-columns: 1fr 38px;
+        }
+        .person input[type="email"] {
+          grid-row: 2;
+          grid-column: 1;
+        }
+        .person button {
+          grid-column: 2;
+          grid-row: 1 / 3;
+          align-self: center;
+        }
+        .person-head {
+          display: none;
+        }
+        .person {
+          border-bottom: 1px solid var(--line);
+          padding-bottom: 12px;
+        }
+        .row {
+          flex-wrap: wrap;
+        }
+        .row .grow {
+          flex-basis: 100%;
+        }
+        .card-heading {
+          align-items: start;
+        }
+        footer {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="mark" aria-hidden="true">✳</span> Secret Santa
+      </div>
+      <div id="header-status" class="connection">
+        <span class="status-dot"></span>A little mystery. A lot of joy.
+      </div>
+    </header>
+    <main>
+      <div class="intro">
+        <div>
+          <div class="eyebrow">Made for your people</div>
+          <h1>A little Christmas magic.</h1>
+          <p class="muted">
+            Gather your family, set the rules, and let the secret giving begin.
+          </p>
+        </div>
+        <span class="badge">✧ &nbsp; Your family stays in this browser</span>
+      </div>
+      <div
+        id="notice"
+        class="notice"
+        role="status"
+        aria-live="polite"
+        hidden
+      ></div>
+      <div class="layout">
+        <div class="stack">
+          <section class="card" aria-labelledby="family-title">
+            <div class="card-heading">
+              <h2 id="family-title"><span class="step">1</span>Your people</h2>
+              <span id="people-count" class="eyebrow">0 people</span>
+            </div>
+            <fieldset id="family-fields">
+              <label for="family-select">Family configuration</label
+              ><select id="family-select"></select>
+              <div class="actions family-tools">
+                <button id="new-family" class="small">+ New family</button
+                ><button id="rename-family" class="small">Rename</button
+                ><button id="delete-family" class="small danger">Delete</button>
+              </div>
+              <div class="person-head" aria-hidden="true">
+                <span>Name</span><span>Email address</span><span></span>
+              </div>
+              <div id="people"></div>
+              <button id="add-person" class="small">+ Add person</button>
+              <div class="save-state" id="save-state" aria-live="polite">
+                Saved automatically on this device.
+              </div>
+            </fieldset>
+          </section>
+          <section class="card" aria-labelledby="rules-title">
+            <div class="card-heading">
+              <h2 id="rules-title">
+                <span class="step">2</span>A few ground rules
+              </h2>
+            </div>
+            <p class="hint">
+              Everyone gives to one person and receives from one person, in a
+              single circle. No one draws themselves.
+            </p>
+            <fieldset id="rules-fields">
+              <div class="rule-selects" style="margin-top: 18px">
+                <div>
+                  <label for="block-from">Giver</label
+                  ><select id="block-from"></select>
+                </div>
+                <span class="arrow" aria-hidden="true">→</span>
+                <div>
+                  <label for="block-to">Cannot buy for</label
+                  ><select id="block-to"></select>
+                </div>
+              </div>
+              <label class="check"
+                ><input id="block-both" type="checkbox" checked />Block both
+                directions</label
+              ><button id="add-rule" class="small">+ Add restriction</button>
+              <ul id="rules" class="rules"></ul>
+            </fieldset>
+          </section>
+          <section class="card" aria-labelledby="google-title">
+            <div class="card-heading">
+              <h2 id="google-title">
+                <span class="step">3</span>Your delivery helper
+              </h2>
+            </div>
+            <p class="hint">
+              Connect your Gmail account when you’re ready to send.
+              Authorization lasts for this visit only.
+            </p>
+            <details style="margin-top: 18px" id="google-settings">
+              <summary>Google OAuth settings</summary>
+              <div class="field">
+                <label for="client-id">Google OAuth client ID</label
+                ><input
+                  id="client-id"
+                  spellcheck="false"
+                  autocomplete="off"
+                  placeholder="…apps.googleusercontent.com"
+                />
+                <p class="hint">
+                  Public configuration, not a password. Need a new client ID?
+                  Open the
+                  <a
+                    href="https://console.cloud.google.com/auth/clients"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Google Cloud Console</a
+                  >:
+                </p>
+                <ol class="hint">
+                  <li>Create or select a project and enable the Gmail API.</li>
+                  <li>
+                    Configure Google Auth Platform branding and consent. For
+                    personal use, choose External and add your Gmail address as
+                    a test user under Audience.
+                  </li>
+                  <li>
+                    Under Data Access, add the Gmail send
+                    (<code>gmail.send</code>) and email identity
+                    (<code>userinfo.email</code>) scopes.
+                  </li>
+                  <li>
+                    Under Clients, create a <strong>Web application</strong>.
+                    Add this page’s origin (scheme, hostname, and port, without
+                    a path) to <strong>Authorized JavaScript origins</strong>.
+                    For local use, add <code>http://localhost</code> and
+                    <code>http://localhost:8787</code>.
+                  </li>
+                  <li>Copy the client ID here and click Save client ID.</li>
+                </ol>
+                <p class="hint">
+                  <a
+                    href="https://developers.google.com/identity/oauth2/web/guides/get-google-api-clientid"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Google’s full setup guide</a
+                  >
+                </p>
+              </div>
+              <button id="save-client" class="small">Save client ID</button>
+            </details>
+            <div class="divider"></div>
+            <div class="actions">
+              <button id="connect">Connect with Google</button
+              ><button id="disconnect" class="small" hidden>Disconnect</button>
+            </div>
+            <p id="google-status" class="hint" aria-live="polite">
+              Not connected.
+            </p>
+          </section>
+        </div>
+        <div class="stack">
+          <section class="card" aria-labelledby="email-title">
+            <div class="card-heading">
+              <h2 id="email-title">
+                <span class="step">4</span>A note from Santa
+              </h2>
+            </div>
+            <fieldset id="email-fields">
+              <div class="field">
+                <label for="sender-name">Sender display name</label
+                ><input
+                  id="sender-name"
+                  maxlength="120"
+                  placeholder="Santa’s little helper"
+                />
+                <p class="hint">
+                  Sent from your connected Gmail address. Gmail may apply its
+                  account display settings.
+                </p>
+              </div>
+              <div class="field">
+                <label for="subject">Subject</label
+                ><input id="subject" maxlength="200" />
+              </div>
+              <div class="field">
+                <label for="body">Message</label
+                ><textarea id="body" rows="9" maxlength="20000"></textarea>
+                <p class="hint">
+                  Placeholders: <code>{giver}</code>, <code>{recipient}</code>,
+                  <code>{family}</code>. Each person is told who they’re buying
+                  for.
+                </p>
+              </div>
+            </fieldset>
+            <h3>Email preview</h3>
+            <div class="preview">
+              <div id="preview-tag" class="preview-tag">Fictional example</div>
+              <div class="preview-meta" style="margin-top: 12px">
+                <div>From: <span id="preview-from"></span></div>
+                <div>To: <span id="preview-to"></span></div>
+              </div>
+              <div id="preview-subject" class="preview-subject"></div>
+              <pre id="preview-body" class="preview-body"></pre>
+            </div>
+          </section>
+          <section class="card mail-card" aria-labelledby="send-title">
+            <div class="card-heading">
+              <h2 id="send-title">Ready for the big reveal?</h2>
+            </div>
+            <fieldset id="draw-fields">
+              <div class="field">
+                <label for="organizer">I am…</label
+                ><select id="organizer"></select>
+                <p class="hint">
+                  After sending, the page will only show who you’re buying for.
+                </p>
+              </div>
+              <p class="note">
+                A dry-run shows every assignment and sends nothing. Sending
+                creates a fresh draw and keeps everyone else’s assignment off
+                this page.
+              </p>
+              <div class="actions">
+                <button id="dry-run">Try a dry-run</button
+                ><button id="send" class="primary">
+                  Draw &amp; send emails
+                </button>
+              </div>
+            </fieldset>
+            <div id="dry-panel" hidden>
+              <div class="divider"></div>
+              <div class="card-heading">
+                <h3>Dry-run assignments</h3>
+                <button id="clear-dry" class="small" hidden>
+                  Clear dry-run
+                </button>
+              </div>
+              <p class="hint">
+                For checking the rules only. A real mailing uses a new draw.
+              </p>
+              <div id="dry-results"></div>
+            </div>
+            <div id="live-panel" hidden>
+              <div class="divider"></div>
+              <h3 id="live-heading">Sending your invitations…</h3>
+              <p id="live-summary" aria-live="polite"></p>
+              <div id="own-match" hidden></div>
+              <ul id="deliveries" class="delivery-list"></ul>
+              <p class="hint">
+                Assignments stay in memory while this mailing is open. Keep this
+                tab open to retry a failed send. Gmail’s Sent folder contains
+                the messages.
+              </p>
+              <div class="actions" style="margin-top: 16px">
+                <button id="retry" class="primary" hidden>
+                  Retry remaining emails</button
+                ><button id="finish-run" hidden>Close mailing</button>
+              </div>
+            </div>
+            <p id="busy-status" class="hint" aria-live="polite" hidden></p>
+          </section>
+        </div>
+      </div>
+      <footer>
+        <span>Made for secrets worth keeping. ✧</span
+        ><span
+          >Families &amp; templates: local storage. Tokens &amp; live draws:
+          memory only.</span
+        >
+      </footer>
+    </main>
+    <dialog id="family-dialog">
+      <form id="family-form">
+        <h2 id="family-dialog-title">New family</h2>
+        <label for="family-name">Family name</label
+        ><input id="family-name" maxlength="80" required />
+        <div class="actions">
+          <button type="button" id="cancel-family">Cancel</button
+          ><button class="primary" type="submit">Save family</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="send-dialog">
+      <h2>Let the secret giving begin.</h2>
+      <p id="send-confirmation"></p>
+      <p class="note">
+        This sends real emails with a fresh draw. The dry-run assignments will
+        be cleared. Only your own gift recipient will appear here after
+        completion.
+      </p>
+      <div class="actions">
+        <button id="cancel-send">Cancel</button
+        ><button id="confirm-send" class="primary">Send assignments</button>
+      </div>
+    </dialog>
+    <script>
+      "use strict";
+      // All application logic lives in this file. This core is also exercised by node:test.
+      const SantaCore = (() => {
+        const TOKENS = ["giver", "recipient", "family"];
+        const DEFAULT_SUBJECT = "Your {family} Secret Santa assignment ✨";
+        const DEFAULT_BODY =
+          "Hi {giver},\n\nThe names are drawn and the secret is yours…\n\nYou’re buying a gift for {recipient}!\n\nKeep it a surprise, and let the Christmas magic begin.\n\nWith love,\nSanta’s little helper";
+        const uid = () => crypto.randomUUID();
+        const newFamily = (name) => ({
+          id: uid(),
+          name,
+          people: [],
+          blocks: [],
+          organizerId: "",
+          senderName: "Santa’s little helper",
+          subject: DEFAULT_SUBJECT,
+          body: DEFAULT_BODY,
+        });
+        const edge = (a, b) => `${a}:${b}`;
+        function randomInt(max) {
+          const range = 0x100000000,
+            limit = range - (range % max),
+            buffer = new Uint32Array(1);
+          do {
+            crypto.getRandomValues(buffer);
+          } while (buffer[0] >= limit);
+          return buffer[0] % max;
+        }
+        function shuffle(items) {
+          const result = items.slice();
+          for (let i = result.length - 1; i > 0; i--) {
+            const j = randomInt(i + 1);
+            [result[i], result[j]] = [result[j], result[i]];
+          }
+          return result;
+        }
+        const renderTemplate = (template, values) =>
+          template.replace(/\{([^{}]+)\}/g, (full, key) =>
+            Object.hasOwn(values, key) ? values[key] : full,
+          );
+        const validEmail = (email) =>
+          /^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Za-z0-9](?:[A-Za-z0-9.-]*[A-Za-z0-9])?\.[A-Za-z]{2,}$/.test(
+            email,
+          ) && email.length <= 254;
+        function validateFamily(family) {
+          if (family.people.length < 2)
+            throw Error("Add at least two people before drawing names.");
+          if (family.people.length > 50)
+            throw Error("This page supports up to 50 people per family.");
+          for (const p of family.people) {
+            if (!p.name.trim() || /[\r\n]/.test(p.name))
+              throw Error("Every person needs a name on one line.");
+            if (!validEmail(p.email.trim()))
+              throw Error(
+                `Enter a valid email address for ${p.name || "each person"}.`,
+              );
+          }
+          if (!family.subject.trim() || /[\r\n]/.test(family.subject))
+            throw Error("Enter an email subject on one line.");
+          if (!family.body.trim()) throw Error("Enter an email message.");
+          if (/[\r\n]/.test(family.senderName))
+            throw Error("The sender display name must be on one line.");
+          for (const field of [family.subject, family.body]) {
+            for (const match of field.matchAll(/\{([^{}]+)\}/g)) {
+              if (!TOKENS.includes(match[1]))
+                throw Error(
+                  `Unknown placeholder ${match[0]}. Use {giver}, {recipient}, or {family}.`,
+                );
+            }
+          }
+          if (!family.body.includes("{recipient}"))
+            throw Error(
+              "Include {recipient} in the message so people know who they’re buying for.",
+            );
+        }
+        // A Hamiltonian cycle, anchored at one randomly chosen person. Memoized DFS
+        // searches all possible continuations; a budget exhaustion is never called impossible.
+        async function draw(
+          family,
+          {
+            maxSteps = 2000000,
+            maxMs = 8000,
+            yieldTask = () => new Promise((r) => setTimeout(r, 0)),
+          } = {},
+        ) {
+          validateFamily(family);
+          const people = shuffle(family.people),
+            n = people.length,
+            blocked = new Set(family.blocks.map(([a, b]) => edge(a, b)));
+          const allowed = (a, b) =>
+            a !== b && !blocked.has(edge(people[a].id, people[b].id));
+          const neighbors = people.map((_, a) =>
+            shuffle(people.map((_, b) => b).filter((b) => allowed(a, b))),
+          );
+          if (
+            neighbors.some((list) => !list.length) ||
+            people.some((_, b) => !people.some((_, a) => allowed(a, b)))
+          )
+            throw Error(
+              "No valid circle exists with these restrictions. Remove a restriction or add more people.",
+            );
+          const path = [0],
+            dead = new Set();
+          let steps = 0;
+          const start = Date.now();
+          async function search(last, mask) {
+            if (++steps > maxSteps || Date.now() - start > maxMs)
+              throw Error(
+                "The search reached its time limit. Try again or simplify the restrictions; this does not mean the rules are impossible.",
+              );
+            if (steps % 1024 === 0) await yieldTask();
+            if (path.length === n) return allowed(last, 0);
+            const key = `${mask}:${last}`;
+            if (dead.has(key)) return false;
+            const remaining = people
+              .map((_, i) => i)
+              .filter((i) => !(mask & (1n << BigInt(i))));
+            // Each unused person needs a possible outgoing edge and a possible incoming edge.
+            if (
+              remaining.some(
+                (i) => !remaining.some((j) => allowed(i, j)) && !allowed(i, 0),
+              ) ||
+              remaining.some(
+                (i) =>
+                  !allowed(last, i) && !remaining.some((j) => allowed(j, i)),
+              )
+            ) {
+              dead.add(key);
+              return false;
+            }
+            for (const next of neighbors[last]) {
+              const bit = 1n << BigInt(next);
+              if (mask & bit) continue;
+              path.push(next);
+              if (await search(next, mask | bit)) return true;
+              path.pop();
+            }
+            dead.add(key);
+            return false;
+          }
+          if (!(await search(0, 1n)))
+            throw Error(
+              "No valid circle exists with these restrictions. Remove a restriction or add more people.",
+            );
+          return path.map((index, i) => ({
+            giverId: people[index].id,
+            recipientId: people[path[(i + 1) % n]].id,
+          }));
+        }
+        const valuesFor = (family, pair) => ({
+          giver: family.people.find((p) => p.id === pair.giverId).name,
+          recipient: family.people.find((p) => p.id === pair.recipientId).name,
+          family: family.name,
+        });
+        const bytesBase64 = (bytes) => {
+          let text = "";
+          for (const b of bytes) text += String.fromCharCode(b);
+          return btoa(text);
+        };
+        const base64 = (text) => bytesBase64(new TextEncoder().encode(text));
+        function encodedHeader(text) {
+          if (/[\r\n]/.test(text))
+            throw Error("Email headers must not contain line breaks.");
+          const chunks = [];
+          let chunk = "";
+          for (const char of text) {
+            if (new TextEncoder().encode(chunk + char).length > 42) {
+              chunks.push(chunk);
+              chunk = "";
+            }
+            chunk += char;
+          }
+          if (chunk) chunks.push(chunk);
+          return chunks.map((c) => `=?UTF-8?B?${base64(c)}?=`).join("\r\n ");
+        }
+        function buildMessage(family, pair, fromEmail) {
+          validateFamily(family);
+          if (!validEmail(fromEmail))
+            throw Error(
+              "The connected Google account did not provide a valid email address.",
+            );
+          const giver = family.people.find((p) => p.id === pair.giverId),
+            values = valuesFor(family, pair);
+          const subject = renderTemplate(family.subject, values),
+            body = renderTemplate(family.body, values).replace(
+              /\r\n|\r|\n/g,
+              "\r\n",
+            );
+          const from = family.senderName.trim()
+            ? `${encodedHeader(family.senderName.trim())} <${fromEmail}>`
+            : fromEmail;
+          const lines = [
+            `From: ${from}`,
+            `To: ${encodedHeader(giver.name)} <${giver.email.trim()}>`,
+            `Subject: ${encodedHeader(subject)}`,
+            "MIME-Version: 1.0",
+            "Content-Type: text/plain; charset=UTF-8",
+            "Content-Transfer-Encoding: base64",
+            "",
+            base64(body)
+              .match(/.{1,76}/g)
+              .join("\r\n"),
+          ];
+          return base64(lines.join("\r\n") + "\r\n")
+            .replace(/\+/g, "-")
+            .replace(/\//g, "_")
+            .replace(/=+$/, "");
+        }
+        function parseStore(raw) {
+          const state = JSON.parse(raw);
+          if (
+            state?.version !== 1 ||
+            !Array.isArray(state.families) ||
+            !state.families.length ||
+            typeof state.activeId !== "string" ||
+            typeof state.clientId !== "string"
+          )
+            throw Error("Invalid saved configuration.");
+          const ids = new Set();
+          for (const f of state.families) {
+            if (
+              !f ||
+              typeof f.id !== "string" ||
+              ids.has(f.id) ||
+              !/^[\w-]+$/.test(f.id) ||
+              typeof f.name !== "string" ||
+              !f.name.trim() ||
+              !Array.isArray(f.people) ||
+              !Array.isArray(f.blocks) ||
+              !["organizerId", "senderName", "subject", "body"].every(
+                (k) => typeof f[k] === "string",
+              )
+            )
+              throw Error("Invalid saved family.");
+            ids.add(f.id);
+            const peopleIds = new Set();
+            for (const p of f.people) {
+              if (
+                !p ||
+                typeof p.id !== "string" ||
+                !/^[\w-]+$/.test(p.id) ||
+                peopleIds.has(p.id) ||
+                typeof p.name !== "string" ||
+                typeof p.email !== "string"
+              )
+                throw Error("Invalid saved person.");
+              peopleIds.add(p.id);
+            }
+            if (
+              f.blocks.some(
+                (b) =>
+                  !Array.isArray(b) ||
+                  b.length !== 2 ||
+                  b[0] === b[1] ||
+                  !b.every((id) => peopleIds.has(id)),
+              ) ||
+              (f.organizerId && !peopleIds.has(f.organizerId))
+            )
+              throw Error("Invalid saved restrictions.");
+          }
+          if (!ids.has(state.activeId)) throw Error("Invalid active family.");
+          // Whitelist persisted fields: never load tokens or assignments into application state.
+          return {
+            version: 1,
+            activeId: state.activeId,
+            clientId: state.clientId,
+            families: state.families.map((f) => ({
+              id: f.id,
+              name: f.name,
+              organizerId: f.organizerId,
+              senderName: f.senderName,
+              subject: f.subject,
+              body: f.body,
+              people: f.people.map((p) => ({
+                id: p.id,
+                name: p.name,
+                email: p.email,
+              })),
+              blocks: f.blocks.map((b) => b.slice()),
+            })),
+          };
+        }
+        return {
+          uid,
+          newFamily,
+          renderTemplate,
+          validateFamily,
+          draw,
+          valuesFor,
+          buildMessage,
+          parseStore,
+          validEmail,
+          encodedHeader,
+        };
+      })();
+      globalThis.SantaCore = SantaCore;
+    </script>
+    <script>
+      "use strict";
+      (() => {
+        const C = SantaCore,
+          $ = (id) => document.getElementById(id),
+          STORAGE_KEY = "secret-santa.v1";
+        // Optional public default. No client secret belongs in this page.
+        const DEFAULT_GOOGLE_CLIENT_ID = "";
+        let state,
+          storageOK = true,
+          dry = null,
+          run = null,
+          busy = false,
+          token = null,
+          expiresAt = 0,
+          accountEmail = "",
+          authPending = false,
+          expiryTimer,
+          familyMode = "new";
+        const notice = (message, type = "") => {
+          const node = $("notice");
+          node.textContent = message;
+          node.className = `notice ${type}`;
+          node.hidden = !message;
+        };
+        const element = (tag, text, className) => {
+          const node = document.createElement(tag);
+          if (text !== undefined) node.textContent = text;
+          if (className) node.className = className;
+          return node;
+        };
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) state = C.parseStore(raw);
+        } catch {
+          storageOK = false;
+          notice(
+            "Saved data could not be read. It has been left untouched. Check this browser’s local storage settings or recover the saved data before reloading. This session can still be used, but changes will not be saved.",
+            "error",
+          );
+        }
+        if (!state) {
+          const family = C.newFamily("My family");
+          state = {
+            version: 1,
+            activeId: family.id,
+            clientId: DEFAULT_GOOGLE_CLIENT_ID,
+            families: [family],
+          };
+        }
+        const family = () =>
+          state.families.find((f) => f.id === state.activeId);
+        function save() {
+          if (storageOK) {
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch {
+              storageOK = false;
+              notice(
+                "This browser could not save your changes. You can continue in this session, but changes will be lost when you leave.",
+                "error",
+              );
+            }
+          }
+          $("save-state").textContent = storageOK
+            ? "Saved automatically on this device."
+            : "Session only · local storage unavailable.";
+        }
+        function options(select, items, value) {
+          select.replaceChildren();
+          for (const [id, name] of items) {
+            const option = element("option", name);
+            option.value = id;
+            select.append(option);
+          }
+          if (items.some(([id]) => id === value)) select.value = value;
+        }
+        function invalidateDry() {
+          dry = null;
+          $("dry-results").replaceChildren();
+          $("dry-panel").hidden = true;
+          $("clear-dry").hidden = true;
+          renderPreview();
+        }
+        function changed() {
+          invalidateDry();
+          save();
+        }
+        function renderSelects() {
+          const f = family(),
+            entries = f.people.map((p) => [
+              p.id,
+              p.name.trim() || "Unnamed person",
+            ]);
+          options($("block-from"), entries, $("block-from").value);
+          options($("block-to"), entries, $("block-to").value);
+          if (
+            entries.length > 1 &&
+            $("block-to").value === $("block-from").value
+          )
+            $("block-to").value = entries.find(
+              ([id]) => id !== $("block-from").value,
+            )[0];
+          options(
+            $("organizer"),
+            [["", "I’m organizing, but not participating"], ...entries],
+            f.organizerId,
+          );
+          $("people-count").textContent =
+            `${entries.length} ${entries.length === 1 ? "person" : "people"}`;
+          $("add-rule").disabled = entries.length < 2;
+          renderRules();
+        }
+        function renderPeople() {
+          const container = $("people");
+          container.replaceChildren();
+          if (!family().people.length)
+            container.append(
+              element(
+                "p",
+                "Start with the people who make your Christmas.",
+                "empty",
+              ),
+            );
+          for (const person of family().people) {
+            const row = element("div", undefined, "person"),
+              name = element("input"),
+              email = element("input"),
+              remove = element("button", "×");
+            name.type = "text";
+            name.value = person.name;
+            name.placeholder = "Name";
+            name.maxLength = 100;
+            name.setAttribute("aria-label", "Participant name");
+            email.type = "email";
+            email.value = person.email;
+            email.placeholder = "Email address";
+            email.maxLength = 254;
+            email.setAttribute(
+              "aria-label",
+              `Email for ${person.name || "participant"}`,
+            );
+            remove.type = "button";
+            remove.className = "danger";
+            remove.setAttribute(
+              "aria-label",
+              `Remove ${person.name || "participant"}`,
+            );
+            name.addEventListener("input", () => {
+              person.name = name.value;
+              email.setAttribute(
+                "aria-label",
+                `Email for ${person.name || "participant"}`,
+              );
+              remove.setAttribute(
+                "aria-label",
+                `Remove ${person.name || "participant"}`,
+              );
+              renderSelects();
+              changed();
+            });
+            email.addEventListener("input", () => {
+              person.email = email.value;
+              changed();
+            });
+            remove.addEventListener("click", () => {
+              const f = family();
+              f.people = f.people.filter((p) => p.id !== person.id);
+              f.blocks = f.blocks.filter((b) => !b.includes(person.id));
+              if (f.organizerId === person.id) f.organizerId = "";
+              changed();
+              renderPeople();
+              renderSelects();
+              $("add-person").focus();
+            });
+            row.append(name, email, remove);
+            container.append(row);
+          }
+        }
+        function renderRules() {
+          const f = family(),
+            list = $("rules");
+          list.replaceChildren();
+          const covered = new Set();
+          for (const [a, b] of f.blocks) {
+            const key = `${a}:${b}`;
+            if (covered.has(key)) continue;
+            covered.add(key);
+            const both = f.blocks.some(([x, y]) => x === b && y === a);
+            if (both) covered.add(`${b}:${a}`);
+            const name = (id) =>
+              f.people.find((p) => p.id === id)?.name || "Unnamed person";
+            const li = element("li"),
+              text = element(
+                "span",
+                `${name(a)} ${both ? "↔" : "→"} ${name(b)}`,
+              ),
+              remove = element("button", "Remove", "small");
+            remove.setAttribute(
+              "aria-label",
+              `Remove restriction: ${text.textContent}`,
+            );
+            remove.addEventListener("click", () => {
+              f.blocks = f.blocks.filter(
+                ([x, y]) =>
+                  !(x === a && y === b) && !(both && x === b && y === a),
+              );
+              changed();
+              renderRules();
+            });
+            li.append(text, remove);
+            list.append(li);
+          }
+          if (!f.blocks.length)
+            list.append(
+              element(
+                "li",
+                "No extra restrictions. Everyone is in the mix.",
+                "muted",
+              ),
+            );
+        }
+        function renderPreview() {
+          const f = family();
+          const values = { giver: "Alex", recipient: "Jamie", family: f.name };
+          $("preview-from").textContent =
+            `${f.senderName.trim() || "Santa’s little helper"} <you@example.com>`;
+          $("preview-to").textContent = "Alex <alex@example.com>";
+          $("preview-subject").textContent = C.renderTemplate(
+            f.subject,
+            values,
+          );
+          $("preview-body").textContent = C.renderTemplate(f.body, values);
+        }
+        function renderFamily() {
+          const f = family();
+          options(
+            $("family-select"),
+            state.families.map((f) => [f.id, f.name]),
+            state.activeId,
+          );
+          for (const [id, key] of [
+            ["sender-name", "senderName"],
+            ["subject", "subject"],
+            ["body", "body"],
+          ])
+            $(id).value = f[key];
+          renderPeople();
+          renderSelects();
+          renderPreview();
+        }
+        function setLocked() {
+          for (const id of [
+            "family-fields",
+            "rules-fields",
+            "email-fields",
+            "draw-fields",
+          ])
+            $(id).disabled = busy || !!run;
+          $("clear-dry").disabled = busy || !!run;
+          $("connect").disabled = busy || authPending || !!token;
+          $("disconnect").disabled = busy || authPending;
+          $("save-client").disabled = busy || authPending || !!run;
+          $("client-id").disabled = busy || authPending || !!run;
+          $("retry").disabled = busy;
+          $("finish-run").disabled = busy;
+        }
+        function authStatus() {
+          $("connect").hidden = !!token;
+          $("disconnect").hidden = !token;
+          $("google-status").textContent = token
+            ? `Connected as ${accountEmail}. Send permission only; no mailbox read access.`
+            : authPending
+              ? "Waiting for Google authorization…"
+              : "Not connected. Connect before sending emails.";
+          $("header-status").textContent = token
+            ? `Connected · ${accountEmail}`
+            : "A little mystery. A lot of joy.";
+          renderPreview();
+          setLocked();
+        }
+        function forgetToken() {
+          clearTimeout(expiryTimer);
+          token = null;
+          expiresAt = 0;
+          accountEmail = "";
+          authStatus();
+        }
+        function requireToken() {
+          if (!token || Date.now() >= expiresAt) {
+            forgetToken();
+            throw Error(
+              "Connect with Google before sending. If authorization expired, reconnect to retry the same draw.",
+            );
+          }
+        }
+        function renderDry() {
+          const f = family();
+          const table = element("table"),
+            head = element("thead"),
+            tr = element("tr");
+          tr.append(element("th", "Giver"), element("th", "Buys a gift for"));
+          head.append(tr);
+          const body = element("tbody");
+          for (const pair of dry) {
+            const values = C.valuesFor(f, pair),
+              row = element("tr");
+            row.append(
+              element("td", values.giver),
+              element("td", values.recipient),
+            );
+            body.append(row);
+          }
+          table.append(head, body);
+          $("dry-results").replaceChildren(table);
+          $("dry-panel").hidden = false;
+          $("clear-dry").hidden = false;
+          renderPreview();
+        }
+        function renderRun() {
+          if (!run) {
+            $("live-panel").hidden = true;
+            return;
+          }
+          $("live-panel").hidden = false;
+          const done = run.deliveries.filter((d) => d.status === "sent").length,
+            complete = done === run.deliveries.length;
+          $("live-heading").textContent = complete
+            ? "The secrets are on their way."
+            : busy
+              ? "Sending your assignments…"
+              : "Mailing paused";
+          $("live-summary").textContent =
+            `${done} of ${run.deliveries.length} emails accepted by Gmail.${complete ? " Delivery to inboxes is not guaranteed." : ""}`;
+          const list = $("deliveries");
+          list.replaceChildren();
+          const labels = {
+            pending: "Waiting",
+            sending: "Sending…",
+            sent: "Accepted by Gmail",
+            failed: "Not sent · retry available",
+            uncertain: "Delivery uncertain",
+          };
+          for (const delivery of run.deliveries) {
+            const li = element("li");
+            li.append(
+              element("span", delivery.name),
+              element("span", labels[delivery.status]),
+            );
+            list.append(li);
+          }
+          $("retry").hidden = complete || busy;
+          $("finish-run").hidden = busy;
+          $("finish-run").textContent = complete
+            ? "Close mailing"
+            : "Discard this mailing";
+          $("own-match").hidden = !complete || !run.ownRecipient;
+          $("own-match").textContent =
+            complete && run.ownRecipient
+              ? `You’re buying a gift for ${run.ownRecipient}.`
+              : "";
+          setLocked();
+        }
+        function setBusy(value, message = "") {
+          busy = value;
+          $("busy-status").hidden = !value;
+          $("busy-status").textContent = message;
+          setLocked();
+        }
+        async function guarded(action) {
+          try {
+            await action();
+          } catch (error) {
+            notice(
+              error.message || "Something went wrong. Try again.",
+              "error",
+            );
+          } finally {
+            setBusy(false);
+            if (run) renderRun();
+          }
+        }
+        async function sendRemaining() {
+          requireToken();
+          if (accountEmail !== run.senderEmail)
+            throw Error(
+              `Reconnect the original sending account (${run.senderEmail}) to continue this mailing.`,
+            );
+          if (
+            run.deliveries.some((d) => d.status === "uncertain") &&
+            !confirm(
+              "Gmail may already have accepted an email whose delivery is uncertain. Retrying it can send a duplicate assignment. Retry uncertain and remaining emails using the same draw?",
+            )
+          )
+            return;
+          setBusy(true);
+          notice("");
+          renderRun();
+          for (const delivery of run.deliveries) {
+            if (delivery.status === "sent") continue;
+            requireToken();
+            delivery.status = "sending";
+            renderRun();
+            let response;
+            try {
+              response = await fetch(
+                "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+                {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    raw: C.buildMessage(
+                      run.family,
+                      delivery.pair,
+                      run.senderEmail,
+                    ),
+                  }),
+                  signal: AbortSignal.timeout(30000),
+                },
+              );
+            } catch {
+              delivery.status = "uncertain";
+              throw Error(
+                "The connection ended before Gmail confirmed a send. This email may have been sent. The mailing is paused; retrying uses the same assignments and may create a duplicate.",
+              );
+            }
+            if (!response.ok) {
+              delivery.status =
+                response.status >= 500 || response.status === 408
+                  ? "uncertain"
+                  : "failed";
+              if (response.status === 401) {
+                forgetToken();
+                throw Error(
+                  "Google authorization expired. Reconnect the same account, then retry the remaining emails with this draw.",
+                );
+              }
+              const reason =
+                response.status === 403
+                  ? "Check that Gmail API is enabled and send permission was granted."
+                  : response.status === 429
+                    ? "Gmail is rate limiting sends. Wait before retrying."
+                    : response.status >= 500
+                      ? "Gmail had a server error. The last email may have been sent."
+                      : "Check your Google setup and account sending limits before retrying.";
+              throw Error(
+                `Mailing paused (HTTP ${response.status}). ${reason} The same draw is kept in this tab.`,
+              );
+            }
+            delivery.status = "sent";
+            renderRun();
+          }
+          // Destroy all live assignments immediately after Gmail accepts every email.
+          run.ownRecipient = run.family.organizerId
+            ? run.family.people.find(
+                (p) =>
+                  p.id ===
+                  run.deliveries.find(
+                    (d) => d.pair.giverId === run.family.organizerId,
+                  ).pair.recipientId,
+              ).name
+            : "";
+          for (const d of run.deliveries) delete d.pair;
+          run.family = null;
+          notice(
+            "Gmail accepted every assignment email. Everyone else’s pairings have been cleared from memory.",
+            "success",
+          );
+        }
+        $("add-person").addEventListener("click", () => {
+          if (family().people.length >= 50) {
+            notice("You can add up to 50 people per family.", "error");
+            return;
+          }
+          family().people.push({ id: C.uid(), name: "", email: "" });
+          changed();
+          renderPeople();
+          renderSelects();
+          $("people").lastElementChild.querySelector("input").focus();
+        });
+        $("add-rule").addEventListener("click", () => {
+          const a = $("block-from").value,
+            b = $("block-to").value;
+          if (!a || !b || a === b) {
+            notice("Choose two different people for a restriction.", "error");
+            return;
+          }
+          const f = family(),
+            add = (x, y) => {
+              if (!f.blocks.some(([a, b]) => a === x && b === y))
+                f.blocks.push([x, y]);
+            };
+          add(a, b);
+          if ($("block-both").checked) add(b, a);
+          changed();
+          renderRules();
+          notice("Restriction saved.");
+        });
+        $("family-select").addEventListener("change", () => {
+          state.activeId = $("family-select").value;
+          invalidateDry();
+          save();
+          renderFamily();
+          notice("");
+        });
+        function openFamilyDialog(mode) {
+          familyMode = mode;
+          $("family-dialog-title").textContent =
+            mode === "new" ? "New family" : "Rename family";
+          $("family-name").value = mode === "new" ? "" : family().name;
+          $("family-dialog").showModal();
+          $("family-name").focus();
+        }
+        $("new-family").addEventListener("click", () =>
+          openFamilyDialog("new"),
+        );
+        $("rename-family").addEventListener("click", () =>
+          openFamilyDialog("rename"),
+        );
+        $("cancel-family").addEventListener("click", () =>
+          $("family-dialog").close(),
+        );
+        $("family-form").addEventListener("submit", (event) => {
+          event.preventDefault();
+          const name = $("family-name").value.trim();
+          if (!name) {
+            $("family-name").setCustomValidity("Enter a family name.");
+            $("family-name").reportValidity();
+            return;
+          }
+          if (familyMode === "new") {
+            const f = C.newFamily(name);
+            state.families.push(f);
+            state.activeId = f.id;
+          } else family().name = name;
+          $("family-dialog").close();
+          changed();
+          renderFamily();
+        });
+        $("family-name").addEventListener("input", () =>
+          $("family-name").setCustomValidity(""),
+        );
+        $("delete-family").addEventListener("click", () => {
+          if (
+            !confirm(
+              `Delete “${family().name}” and its saved people, restrictions, and template from this browser?`,
+            )
+          )
+            return;
+          state.families = state.families.filter(
+            (f) => f.id !== state.activeId,
+          );
+          if (!state.families.length)
+            state.families.push(C.newFamily("My family"));
+          state.activeId = state.families[0].id;
+          changed();
+          renderFamily();
+        });
+        for (const [id, key] of [
+          ["sender-name", "senderName"],
+          ["subject", "subject"],
+          ["body", "body"],
+        ])
+          $(id).addEventListener("input", () => {
+            family()[key] = $(id).value;
+            changed();
+          });
+        $("organizer").addEventListener("change", () => {
+          family().organizerId = $("organizer").value;
+          save();
+        });
+        $("clear-dry").addEventListener("click", invalidateDry);
+        $("dry-run").addEventListener("click", () =>
+          guarded(async () => {
+            notice("");
+            setBusy(true, "Finding a valid circle…");
+            await new Promise((r) => setTimeout(r, 0));
+            dry = await C.draw(structuredClone(family()));
+            renderDry();
+            notice(
+              "Dry-run complete. No emails were sent. A real mailing will use a fresh draw.",
+              "success",
+            );
+          }),
+        );
+        $("save-client").addEventListener("click", () => {
+          const id = $("client-id").value.trim();
+          if (id && !/^[\w.-]+\.apps\.googleusercontent\.com$/.test(id)) {
+            notice("Enter a valid Google OAuth web client ID.", "error");
+            return;
+          }
+          state.clientId = id;
+          save();
+          forgetToken();
+          notice("Google client ID saved.");
+        });
+        $("connect").addEventListener("click", () => {
+          if (!state.clientId) {
+            $("google-settings").open = true;
+            $("client-id").focus();
+            notice(
+              "Save your Google OAuth client ID before connecting.",
+              "error",
+            );
+            return;
+          }
+          if (!globalThis.google?.accounts?.oauth2) {
+            notice(
+              "Google’s authorization library is unavailable. Check your internet connection or content blocker, then reload.",
+              "error",
+            );
+            return;
+          }
+          if (location.protocol === "file:") {
+            notice(
+              "Google authorization requires a registered web origin. Serve this page on localhost or your HTTPS Cloudflare Worker.",
+              "error",
+            );
+            return;
+          }
+          const accountGoogle = google.accounts.oauth2;
+          authPending = true;
+          authStatus();
+          try {
+            const client = accountGoogle.initTokenClient({
+              client_id: state.clientId,
+              scope:
+                "https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/userinfo.email",
+              include_granted_scopes: false,
+              callback: async (response) => {
+                try {
+                  if (response.error)
+                    throw Error(
+                      "Google authorization was declined or failed. You can try connecting again.",
+                    );
+                  if (
+                    !accountGoogle.hasGrantedAllScopes(
+                      response,
+                      "https://www.googleapis.com/auth/gmail.send",
+                      "https://www.googleapis.com/auth/userinfo.email",
+                    )
+                  )
+                    throw Error(
+                      "Grant both email identity and Gmail send permission to continue.",
+                    );
+                  const identity = await fetch(
+                    "https://www.googleapis.com/oauth2/v3/userinfo",
+                    {
+                      headers: {
+                        Authorization: `Bearer ${response.access_token}`,
+                      },
+                      signal: AbortSignal.timeout(15000),
+                    },
+                  );
+                  if (!identity.ok)
+                    throw Error(
+                      "Could not identify the connected Google account. Try connecting again.",
+                    );
+                  const info = await identity.json();
+                  if (!C.validEmail(info.email || "") || !info.email_verified)
+                    throw Error(
+                      "Google did not provide a verified email address.",
+                    );
+                  const seconds = Number(response.expires_in);
+                  if (!Number.isFinite(seconds) || seconds <= 30)
+                    throw Error(
+                      "Google returned an expired authorization. Try again.",
+                    );
+                  token = response.access_token;
+                  accountEmail = info.email;
+                  expiresAt = Date.now() + (seconds - 30) * 1000;
+                  clearTimeout(expiryTimer);
+                  expiryTimer = setTimeout(
+                    () => {
+                      forgetToken();
+                      notice(
+                        "Google authorization expired. Reconnect when you’re ready to send or retry.",
+                      );
+                    },
+                    Math.min(seconds * 1000 - 30000, 2147483647),
+                  );
+                  notice(`Connected as ${accountEmail}.`, "success");
+                } catch (error) {
+                  forgetToken();
+                  notice(
+                    error.message || "Google connection failed. Try again.",
+                    "error",
+                  );
+                } finally {
+                  authPending = false;
+                  authStatus();
+                }
+              },
+              error_callback: () => {
+                authPending = false;
+                authStatus();
+                notice(
+                  "The Google authorization popup was closed or could not open. Allow popups and try again.",
+                  "error",
+                );
+              },
+            });
+            client.requestAccessToken({ prompt: "consent" });
+          } catch {
+            authPending = false;
+            authStatus();
+            notice(
+              "Could not open Google authorization. Check the client ID, site origin, and popup permissions.",
+              "error",
+            );
+          }
+        });
+        $("disconnect").addEventListener("click", () => {
+          const old = token;
+          forgetToken();
+          if (old && globalThis.google?.accounts?.oauth2)
+            google.accounts.oauth2.revoke(old, () => {});
+          notice(
+            "Disconnected. The access token has been cleared from this page.",
+          );
+        });
+        $("send").addEventListener("click", () =>
+          guarded(async () => {
+            C.validateFamily(family());
+            requireToken();
+            $("send-confirmation").textContent =
+              `Send ${family().people.length} personalized emails for ${family().name}, from ${family().senderName.trim() || accountEmail} <${accountEmail}>?`;
+            $("send-dialog").showModal();
+          }),
+        );
+        $("cancel-send").addEventListener("click", () =>
+          $("send-dialog").close(),
+        );
+        $("confirm-send").addEventListener("click", () =>
+          guarded(async () => {
+            $("send-dialog").close();
+            requireToken();
+            const senderEmail = accountEmail;
+            const snapshot = structuredClone(family());
+            C.validateFamily(snapshot);
+            invalidateDry();
+            notice("");
+            setBusy(true, "Finding a fresh circle for this mailing…");
+            await new Promise((r) => setTimeout(r, 0));
+            const pairs = await C.draw(snapshot);
+            run = {
+              family: snapshot,
+              senderEmail,
+              ownRecipient: "",
+              deliveries: pairs.map((pair) => ({
+                pair,
+                name: snapshot.people.find((p) => p.id === pair.giverId).name,
+                status: "pending",
+              })),
+            };
+            renderRun();
+            await sendRemaining();
+          }),
+        );
+        $("retry").addEventListener("click", () => guarded(sendRemaining));
+        $("finish-run").addEventListener("click", () => {
+          const incomplete = run.deliveries.some((d) => d.status !== "sent");
+          if (
+            incomplete &&
+            !confirm(
+              "Discard this mailing and its unsent assignments? They cannot be recovered. People who already received an email will keep that assignment. A new draw would conflict with those emails.",
+            )
+          )
+            return;
+          run = null;
+          $("own-match").textContent = "";
+          $("deliveries").replaceChildren();
+          renderRun();
+          setLocked();
+          notice(
+            incomplete
+              ? "Mailing discarded. If any emails were already sent, coordinate with participants before starting another draw."
+              : "Mailing closed.",
+          );
+        });
+        window.addEventListener("beforeunload", (event) => {
+          if (busy || run?.family || !storageOK) {
+            event.preventDefault();
+            event.returnValue = "";
+          }
+        });
+        window.addEventListener("pageshow", (event) => {
+          if (event.persisted) {
+            forgetToken();
+            run = null;
+            dry = null;
+            busy = false;
+            invalidateDry();
+            renderRun();
+            setLocked();
+            notice(
+              "This tab was restored. Google authorization and live assignments have been cleared.",
+            );
+          }
+        });
+        $("client-id").value = state.clientId;
+        if (!state.clientId) $("google-settings").open = true;
+        renderFamily();
+        save();
+        authStatus();
+      })();
+    </script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </body>
+</html>
